@@ -12,6 +12,44 @@ const nav = [
   { href: '#contact', label: 'Contact' },
 ];
 
+/**
+ * Which primary section the reader is in, so the nav can show where they are.
+ * Section positions are cached and refreshed only when the page resizes, so
+ * scrolling reads scrollY alone and never forces a layout.
+ */
+function useCurrentSection(enabled: boolean) {
+  const [current, setCurrent] = useState('');
+  useEffect(() => {
+    if (!enabled) { setCurrent(''); return; }
+    const ids = nav.map((n) => n.href.slice(1));
+    let tops: number[] = [];
+    let raf = 0;
+    const measure = () => {
+      tops = ids.map((id) => {
+        const section = document.getElementById(id)?.closest('section');
+        return section ? section.getBoundingClientRect().top + window.scrollY : Infinity;
+      });
+    };
+    const update = () => {
+      raf = 0;
+      const line = window.scrollY + window.innerHeight * 0.35;
+      let found = '';
+      tops.forEach((top, i) => { if (top <= line) found = ids[i]; });
+      // The last section can be too short to reach the line; the page end counts as it.
+      if (found && window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) found = ids[ids.length - 1];
+      setCurrent(found);
+    };
+    const schedule = () => { if (!raf) raf = requestAnimationFrame(update); };
+    const remeasure = () => { measure(); schedule(); };
+    const resize = new ResizeObserver(remeasure);
+    resize.observe(document.body);
+    addEventListener('scroll', schedule, { passive: true });
+    addEventListener('resize', remeasure);
+    return () => { resize.disconnect(); removeEventListener('scroll', schedule); removeEventListener('resize', remeasure); cancelAnimationFrame(raf); };
+  }, [enabled]);
+  return current;
+}
+
 function Controls() {
   const { theme, toggleTheme, motion, toggleMotion } = usePrefs();
   return (
@@ -35,6 +73,7 @@ function Header() {
   const btn = useRef<HTMLButtonElement>(null);
   const panel = useRef<HTMLDivElement>(null);
   const [loc] = useLocation();
+  const current = useCurrentSection(loc === '/');
   useEffect(() => setOpen(false), [loc]);
   useEffect(() => {
     if (!open) return;
@@ -52,7 +91,14 @@ function Header() {
           <span>Deepthi <span className="hidden min-[360px]:inline">Ramesh</span></span>
         </Link>
         <nav aria-label="Primary" className="hidden md:flex items-center gap-7 text-[0.95rem]">
-          {nav.map((n) => <a key={n.href} href={`${BASE}${n.href}`} className="hover:text-primary" data-testid={`link-nav-${n.label.toLowerCase()}`}>{n.label}</a>)}
+          {nav.map((n) => {
+            const here = current === n.href.slice(1);
+            return (
+              <a key={n.href} href={`${BASE}${n.href}`} aria-current={here ? 'location' : undefined}
+                className={`relative py-1 hover:text-primary transition-colors after:absolute after:left-0 after:right-0 after:-bottom-0.5 after:h-0.5 after:origin-left after:bg-primary after:transition-transform ${here ? 'text-primary after:scale-x-100' : 'after:scale-x-0'}`}
+                data-testid={`link-nav-${n.label.toLowerCase()}`}>{n.label}</a>
+            );
+          })}
         </nav>
         <div className="needs-js flex items-center gap-1">
           <Controls />
@@ -70,7 +116,14 @@ function Header() {
       {open && (
         <div id="mobile-menu" ref={panel} className="md:hidden border-t border-foreground/10 bg-background">
           <nav aria-label="Mobile" className="wrap py-4 flex flex-col">
-            {nav.map((n) => <a key={n.href} href={`${BASE}${n.href}`} onClick={() => setOpen(false)} className="py-3 text-xl font-display border-b border-foreground/10" data-testid={`link-mobile-${n.label.toLowerCase()}`}>{n.label}</a>)}
+            {nav.map((n) => {
+              const here = current === n.href.slice(1);
+              return (
+                <a key={n.href} href={`${BASE}${n.href}`} onClick={() => setOpen(false)} aria-current={here ? 'location' : undefined}
+                  className={`py-3 text-xl font-display border-b border-foreground/10 flex items-center justify-between ${here ? 'text-primary' : ''}`}
+                  data-testid={`link-mobile-${n.label.toLowerCase()}`}>{n.label}{here && <span className="mono text-[0.65rem] uppercase tracking-widest text-muted-foreground">You are here</span>}</a>
+              );
+            })}
             <a href={`mailto:${profile.email}`} className="py-3 text-xl font-display">Email Deepthi</a>
           </nav>
         </div>
@@ -117,13 +170,14 @@ function ScrollProgress() {
 function useReveal() {
   const [loc] = useLocation();
   useEffect(() => {
-    const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
-    const t = setTimeout(() => document.querySelectorAll('.reveal:not(.in)').forEach((el) => {
-      // The initial view remains readable before JavaScript. Only opt future,
-      // below-the-fold content into a reveal after enhancement is available.
-      if (el.getBoundingClientRect().top >= window.innerHeight) el.classList.add('reveal-wait');
-      io.observe(el);
-    }), 30);
+    // The initial view remains readable before JavaScript. Only future,
+    // below-the-fold content opts into a reveal. Positions come from the
+    // observer entries, so this never forces a layout per element on load.
+    const io = new IntersectionObserver((es) => es.forEach((e) => {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      else if (e.boundingClientRect.top >= window.innerHeight) e.target.classList.add('reveal-wait');
+    }), { rootMargin: '0px 0px -8% 0px' });
+    const t = setTimeout(() => document.querySelectorAll('.reveal:not(.in)').forEach((el) => io.observe(el)), 30);
     return () => { clearTimeout(t); io.disconnect(); };
   }, [loc]);
 }

@@ -5,8 +5,42 @@ through the Replit preview proxy.
 
 ## Result
 
-**181 automated browser checks passed, with no failures, retries or skipped
+**188 automated browser checks passed, with no failures, retries or skipped
 checks.** The portfolio typecheck and production build also passed.
+
+### Problem check and usability fixes (25 October 2026)
+
+A full review of every page found and fixed:
+
+- **Diagram text overflow.** In the food-inspection diagram, “1 row / violation”
+  ran past its box. The boxes were widened; a new check confirms every label
+  sits inside its box in both themes.
+- **Mismatched section numbers.** The section headings said Research 04 and
+  Contact 05, but the jump links said 03 and 04. “How I work” no longer carries
+  a number, so headings and jump links now agree. A check enforces this.
+- **Where am I?** The header now highlights the section being read (desktop
+  underline; “You are here” in the phone menu) and exposes it to screen readers.
+  It is off on case-study pages.
+- **Copy email.** A “Copy email” button sits beside the email link, with a
+  spoken confirmation and a clear message if the browser blocks copying.
+- **Phone layout.** The email address now breaks after the “@” rather than
+  mid-word. The “More projects” GitHub link no longer leaves its arrow on a
+  line by itself.
+- **Dashboard screenshots.** Each one links to the full-size image in a new
+  tab, labelled “View full size”, so the charts are readable on phones.
+- **Draft chapters (development preview only).** The four placeholder chapters
+  are now folded into one dashed “Preview only” panel instead of filling the
+  Experience section. The live site is unchanged: drafts still never ship.
+
+All external links were rechecked: every link loaded except the four IEEE
+pages and LinkedIn, which block automated visits, as before. The new
+full-size image links were checked to return real images.
+
+Lighthouse was not used to score this update. On this machine the same built
+files measured very differently from one run to the next, so a score would not
+be meaningful. The added code is small: about 1 KB more gzipped JavaScript.
+Scroll highlighting reads stored section positions instead of measuring the
+page on every scroll.
 
 ### Editable chapters (25 October 2026)
 
@@ -119,13 +153,13 @@ palette/responsiveness update (not a new Lighthouse run):
 | Cumulative layout shift | 0.001 |
 | Measured initial transferred resources | 417 KiB |
 
-The current production build's initial JavaScript bundle is about 79.3 KB
+The current production build's initial JavaScript bundle is about 82.3 KB
 gzipped. The optional workflow
 and game are separate bundles of about 2.9 KB and 2.7 KB gzipped. Fonts are served
 locally, images have intrinsic dimensions, and the first view does not depend
 on animation initialization.
 
-The current stylesheet is 35.4 KB uncompressed / 7.7 KB gzipped, down from the
+The current stylesheet is 38.0 KB uncompressed / 8.1 KB gzipped, down from the
 earlier 106.7 KB by restricting generated styles to the actual application.
 No dependencies were added for the palette or responsive adjustments.
 No WebGL engine, live AI request or

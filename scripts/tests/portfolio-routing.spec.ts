@@ -19,7 +19,12 @@ test('all internal links and fragments, source destinations, contact identities 
         expect(link.href).toBe(`mailto:${email}`);
       } else {
         const target = new URL(link.href, page.url());
-        if (target.origin === new URL(page.url()).origin) {
+        if (target.origin === new URL(page.url()).origin && /^\/img\/[\w.-]+\.(jpe?g|png|webp)$/.test(target.pathname)) {
+          // Full-size image links must point at a real image file.
+          const res = await page.request.get(target.href);
+          expect(res.ok(), `${path}: ${target.pathname}`).toBe(true);
+          expect(res.headers()['content-type']).toContain('image/');
+        } else if (target.origin === new URL(page.url()).origin) {
           expect(paths).toContain(target.pathname);
           if (target.hash) {
             if (target.pathname === path) await expect(page.locator(`[id="${target.hash.slice(1)}"]`)).toHaveCount(1);

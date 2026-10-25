@@ -1,8 +1,8 @@
-import { lazy, Suspense, useRef, useState, type ReactNode } from 'react';
+import { lazy, Suspense, useEffect, useRef, useState, type ReactNode } from 'react';
 import { Link } from 'wouter';
-import { ArrowRight, ArrowUpRight, Mail, Gamepad2, FileText } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Mail, Gamepad2, FileText, Copy, Check } from 'lucide-react';
 import { asset, profile, experience, education, projects, publications, capabilities } from '@/lib/content';
-import { chapterIntro, chapterKinds, resume, resumeHref, showChapterIntro, visibleChapters } from '@/lib/story';
+import { chapterIntro, chapterKinds, resume, resumeHref, visibleChapters, type ChapterEntry } from '@/lib/story';
 import { useNear } from '@/lib/prefs';
 import { InspectionFigure, AgentFigure, Dashboard } from '@/components/figures';
 
@@ -13,10 +13,10 @@ function Skeleton({ h }: { h: string }) {
   return <div role="status" className={`${h} rounded-xl border-2 border-dashed border-foreground/20 bg-muted/40`} aria-label="Loading interactive demo" />;
 }
 
-function SectionHead({ id, n, kicker, title }: { id: string; n: string; kicker: string; title: ReactNode }) {
+function SectionHead({ id, n, kicker, title }: { id: string; n?: string; kicker: string; title: ReactNode }) {
   return (
     <div className="reveal grid md:grid-cols-[180px_1fr] gap-3 md:gap-8 rule pt-5 mb-10">
-      <p className="kicker"><span className="text-foreground">{n}</span> · {kicker}</p>
+      <p className="kicker">{n && <><span className="text-foreground">{n}</span> · </>}{kicker}</p>
       <h2 id={id} className="font-display text-3xl md:text-5xl leading-[1.05] tracking-tight scroll-mt-24">{title}</h2>
     </div>
   );
@@ -96,59 +96,77 @@ function Experience() {
   );
 }
 
+function ChapterGroups({ entries, draft = false }: { entries: ChapterEntry[]; draft?: boolean }) {
+  return (
+    <div className="space-y-12">
+      {chapterKinds.map(({ kind, label }) => {
+        const group = entries.filter((e) => e.kind === kind);
+        if (group.length === 0) return null;
+        return (
+          <div key={kind} className="grid md:grid-cols-[180px_1fr] gap-3 md:gap-8" data-testid={`group-chapter-${kind}`}>
+            <h4 className="font-display italic text-xl text-primary md:pt-1">{label}</h4>
+            <div className="space-y-10">
+              {group.map((e) => (
+                <article key={e.id} className={`grid lg:grid-cols-[1fr_280px] gap-6 ${draft ? '' : 'reveal'}`} data-testid={`item-chapter-${e.id}`}>
+                  <div className="min-w-0">
+                    <p className="mono text-sm text-muted-foreground">{e.dates}</p>
+                    <h5 className="text-xl md:text-2xl font-semibold mt-1 break-words">{e.title} <span className="text-muted-foreground font-normal">· {e.role}{e.org ? `, ${e.org}` : ''}</span></h5>
+                    <p className="mt-2">{e.summary}</p>
+                    <ul className="mt-4 space-y-2">
+                      {e.contributions.map((c) => <li key={c} className="flex gap-3"><span className="mt-2.5 h-1.5 w-3 bg-accent shrink-0" aria-hidden />{c}</li>)}
+                    </ul>
+                    {e.outcomes && e.outcomes.length > 0 && (
+                      <ul className="mt-4 space-y-1 border-l-4 border-[hsl(var(--signal))] pl-3 text-sm">
+                        {e.outcomes.map((o) => <li key={o}>{o}</li>)}
+                      </ul>
+                    )}
+                    {e.evidence && e.evidence.length > 0 && (
+                      <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2">
+                        {e.evidence.map((x) => <a key={x.url} href={x.url} target="_blank" rel="noreferrer" className="link text-sm inline-flex items-center gap-1 break-all" data-testid={`link-chapter-evidence-${e.id}`}>{x.label} <ArrowUpRight size={14} aria-hidden /></a>)}
+                      </div>
+                    )}
+                  </div>
+                  {e.tools && e.tools.length > 0 && (
+                    <div className="lg:border-l lg:pl-6 border-foreground/15">
+                      <p className="kicker mb-2">Used</p>
+                      <p className="mono text-sm leading-7">{e.tools.join(' · ')}</p>
+                    </div>
+                  )}
+                </article>
+              ))}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 function Chapters() {
-  if (visibleChapters.length === 0) return null;
+  const published = visibleChapters.filter((e) => e.status === 'published');
+  // Drafts exist only in the development preview; production builds drop them.
+  const drafts = visibleChapters.filter((e) => e.status === 'draft');
+  const introPublished = chapterIntro.status === 'published';
+  if (published.length === 0 && drafts.length === 0) return null;
   return (
     <div className="mt-16" data-testid="section-chapters">
       <div className="reveal grid md:grid-cols-[180px_1fr] gap-3 md:gap-8 border-t border-foreground/20 pt-5 mb-8">
         <p className="kicker">Beyond the role</p>
         <div>
           <h3 id="beyond" className="font-display text-2xl md:text-4xl leading-tight scroll-mt-24">{chapterIntro.title}</h3>
-          {showChapterIntro && <p className="mt-3 text-muted-foreground max-w-2xl">{chapterIntro.lede}</p>}
+          {introPublished && <p className="mt-3 text-muted-foreground max-w-2xl">{chapterIntro.lede}</p>}
         </div>
       </div>
-      <div className="space-y-12">
-        {chapterKinds.map(({ kind, label }) => {
-          const entries = visibleChapters.filter((e) => e.kind === kind);
-          if (entries.length === 0) return null;
-          return (
-            <div key={kind} className="grid md:grid-cols-[180px_1fr] gap-3 md:gap-8" data-testid={`group-chapter-${kind}`}>
-              <h4 className="font-display italic text-xl text-primary md:pt-1">{label}</h4>
-              <div className="space-y-10">
-                {entries.map((e) => (
-                  <article key={e.id} className={`reveal grid lg:grid-cols-[1fr_280px] gap-6 ${e.status === 'draft' ? 'rounded-xl border-2 border-dashed border-foreground/30 p-4 md:p-5' : ''}`} data-testid={`item-chapter-${e.id}`}>
-                    <div className="min-w-0">
-                      {e.status === 'draft' && <p className="mono text-xs uppercase tracking-widest text-[hsl(var(--signal))] mb-2">Draft · preview only, hidden on the live site</p>}
-                      <p className="mono text-sm text-muted-foreground">{e.dates}</p>
-                      <h5 className="text-xl md:text-2xl font-semibold mt-1 break-words">{e.title} <span className="text-muted-foreground font-normal">· {e.role}{e.org ? `, ${e.org}` : ''}</span></h5>
-                      <p className="mt-2">{e.summary}</p>
-                      <ul className="mt-4 space-y-2">
-                        {e.contributions.map((c) => <li key={c} className="flex gap-3"><span className="mt-2.5 h-1.5 w-3 bg-accent shrink-0" aria-hidden />{c}</li>)}
-                      </ul>
-                      {e.outcomes && e.outcomes.length > 0 && (
-                        <ul className="mt-4 space-y-1 border-l-4 border-[hsl(var(--signal))] pl-3 text-sm">
-                          {e.outcomes.map((o) => <li key={o}>{o}</li>)}
-                        </ul>
-                      )}
-                      {e.evidence && e.evidence.length > 0 && (
-                        <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2">
-                          {e.evidence.map((x) => <a key={x.url} href={x.url} target="_blank" rel="noreferrer" className="link text-sm inline-flex items-center gap-1 break-all" data-testid={`link-chapter-evidence-${e.id}`}>{x.label} <ArrowUpRight size={14} aria-hidden /></a>)}
-                        </div>
-                      )}
-                    </div>
-                    {e.tools && e.tools.length > 0 && (
-                      <div className="lg:border-l lg:pl-6 border-foreground/15">
-                        <p className="kicker mb-2">Used</p>
-                        <p className="mono text-sm leading-7">{e.tools.join(' · ')}</p>
-                      </div>
-                    )}
-                  </article>
-                ))}
-              </div>
-            </div>
-          );
-        })}
-      </div>
+      {published.length > 0 && <ChapterGroups entries={published} />}
+      {drafts.length > 0 && (
+        <details className="mt-10 rounded-xl border-2 border-dashed border-foreground/30 p-4 md:p-5" data-testid="details-chapter-drafts">
+          <summary className="cursor-pointer mono text-xs uppercase tracking-widest text-[hsl(var(--signal))]">
+            Preview only · {drafts.length} draft {drafts.length === 1 ? 'entry' : 'entries'} waiting for details · hidden on the live site
+          </summary>
+          {!introPublished && <p className="mt-4 text-sm text-muted-foreground"><span className="font-semibold text-foreground">Intro draft:</span> {chapterIntro.lede}</p>}
+          <div className="mt-6"><ChapterGroups entries={drafts} draft /></div>
+        </details>
+      )}
     </div>
   );
 }
@@ -228,9 +246,9 @@ function MoreWork() {
   const rest = projects.slice(3);
   return (
     <section className="wrap py-16" aria-labelledby="more-work">
-      <div className="reveal flex items-end justify-between gap-4 mb-6">
-        <h2 id="more-work" className="font-display text-2xl md:text-3xl">More projects</h2>
-        <a href={profile.github} target="_blank" rel="noreferrer" className="link text-sm inline-flex items-center gap-1" data-testid="link-github-all">All repositories on GitHub <ArrowUpRight size={14} aria-hidden /></a>
+      <div className="reveal flex flex-wrap items-end justify-between gap-x-4 gap-y-2 mb-6">
+        <h2 id="more-work" className="font-display text-2xl md:text-3xl whitespace-nowrap">More projects</h2>
+        <a href={profile.github} target="_blank" rel="noreferrer" className="link text-sm inline-flex items-center gap-1 whitespace-nowrap" data-testid="link-github-all">All repositories on GitHub <ArrowUpRight size={14} aria-hidden /></a>
       </div>
       <ul className="reveal border-t-2 border-foreground/80">
         {rest.map((p) => (
@@ -297,7 +315,7 @@ function Game() {
 function Capabilities() {
   return (
     <section className="wrap py-16" aria-labelledby="capabilities">
-      <SectionHead id="capabilities" n="03" kicker="How I work" title={<>Tools, grouped by <span className="mark">what they’re for</span>.</>} />
+      <SectionHead id="capabilities" kicker="How I work" title={<>Tools, grouped by <span className="mark">what they’re for</span>.</>} />
       <div className="grid sm:grid-cols-2 border-t-2 border-l border-foreground/20">
         {capabilities.map((c, i) => {
           const proof = projects.find((p) => p.slug === c.proof)!;
@@ -318,7 +336,7 @@ function Capabilities() {
 function Research() {
   return (
     <section className="wrap py-16" aria-labelledby="research">
-      <SectionHead id="research" n="04" kicker="Research" title={<>Five papers on <span className="mark">prediction, evaluation and automation</span>.</>} />
+      <SectionHead id="research" n="03" kicker="Research" title={<>Five papers on <span className="mark">prediction, evaluation and automation</span>.</>} />
       <p className="reveal md:ml-[212px] -mt-4 mb-8 text-muted-foreground max-w-2xl">My research spans business prediction, machine learning and workflow automation. Five co-authored publications, with links to the original papers.</p>
       <ol className="md:ml-[212px] border-t border-foreground/20">
         {publications.map((p, i) => (
@@ -350,16 +368,45 @@ function Education() {
   );
 }
 
+function CopyEmail() {
+  const [state, setState] = useState<'idle' | 'copied' | 'failed'>('idle');
+  useEffect(() => {
+    if (state === 'idle') return;
+    const t = setTimeout(() => setState('idle'), 2400);
+    return () => clearTimeout(t);
+  }, [state]);
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(profile.email);
+      setState('copied');
+    } catch {
+      setState('failed');
+    }
+  };
+  return (
+    <>
+      <button type="button" onClick={copy} className="needs-js btn border-2 border-primary-foreground/60 hover:bg-primary-foreground/10" data-testid="button-copy-email">
+        {state === 'copied' ? <Check size={16} aria-hidden /> : <Copy size={16} aria-hidden />}
+        {state === 'copied' ? 'Email copied' : state === 'failed' ? 'Copy unavailable' : 'Copy email'}
+      </button>
+      <span className="sr-only" role="status" aria-live="polite" data-testid="status-copy-email">
+        {state === 'copied' ? 'Email address copied to clipboard.' : state === 'failed' ? `Copy unavailable. The address is ${profile.email}.` : ''}
+      </span>
+    </>
+  );
+}
+
 function Contact() {
   return (
     <section className="wrap pt-16" aria-labelledby="contact">
       <div className="reveal rounded-2xl bg-primary text-primary-foreground p-8 md:p-14 relative overflow-hidden">
         <svg className="absolute right-0 bottom-0 w-2/3 opacity-25" viewBox="0 0 400 160" aria-hidden="true"><path d="M0 150 L80 110 L150 125 L230 60 L300 80 L400 10" fill="none" stroke="hsl(var(--accent))" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" /></svg>
-        <p className="mono text-xs uppercase tracking-widest opacity-80">05 · Contact</p>
+        <p className="mono text-xs uppercase tracking-widest opacity-80">04 · Contact</p>
         <h2 id="contact" className="font-display text-4xl md:text-6xl mt-3 max-w-3xl leading-[1.02] scroll-mt-24 relative">Have a messy question? <em className="italic">Send it over.</em></h2>
         <p className="mt-5 max-w-xl opacity-85 relative">Let’s talk about the data, systems or AI workflows your team is working on. Email is the simplest place to start.</p>
         <div className="mt-8 flex flex-wrap gap-3 relative">
-          <a href={`mailto:${profile.email}`} className="btn bg-accent text-accent-foreground hover:opacity-90" data-testid="link-contact-email"><Mail size={17} />{profile.email}</a>
+          <a href={`mailto:${profile.email}`} className="btn bg-accent text-accent-foreground hover:opacity-90 text-left [overflow-wrap:anywhere]" data-testid="link-contact-email"><Mail size={17} className="shrink-0" /><span>{profile.email.split('@')[0]}@<wbr />{profile.email.split('@')[1]}</span></a>
+          <CopyEmail />
           <a href={profile.linkedin} target="_blank" rel="noreferrer" className="btn border-2 border-primary-foreground/60 hover:bg-primary-foreground/10" data-testid="link-contact-linkedin">LinkedIn profile <ArrowUpRight size={16} aria-hidden /></a>
           <a href={profile.github} target="_blank" rel="noreferrer" className="btn border-2 border-primary-foreground/60 hover:bg-primary-foreground/10" data-testid="link-contact-github">GitHub · Deepthir13 <ArrowUpRight size={16} aria-hidden /></a>
           {resumeHref && <a href={resumeHref} target="_blank" rel="noreferrer" className="btn border-2 border-primary-foreground/60 hover:bg-primary-foreground/10" data-testid="link-contact-resume"><FileText size={16} />{resume.label}</a>}

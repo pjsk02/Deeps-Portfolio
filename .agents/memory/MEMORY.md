@@ -1,3 +1,4 @@
 - [Portfolio editorial voice](portfolio-editorial-voice.md) — keep internal research caveats distinct from confident, accurate candidate-facing storytelling.
 - [Published URL setting](published-url-setting.md) — production address is user-supplied later; never guess or use preview hosts; verify live after setting.
+- [GitHub push identity & history](github-push-history.md) — push as pjsk02 via worktree from origin/main; never force; lab perf numbers here are unstable.
 - [Editable story chapters](editable-story-chapters.md) — startup/hackathon/event chapters are user-owned drafts; never publish or fill them with guesses.
