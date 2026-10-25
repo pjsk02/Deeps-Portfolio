@@ -53,3 +53,13 @@ Thumbs.db
 # Replit
 .cache/
 .local/
+
+# Generated verification output and private conversation transfer metadata
+/generated-artifacts/
+/.conversation/
+
+# Local secrets and generated asset bookkeeping
+.env
+.env.*
+!.env.example
+/.agents/agent_assets_metadata.toml

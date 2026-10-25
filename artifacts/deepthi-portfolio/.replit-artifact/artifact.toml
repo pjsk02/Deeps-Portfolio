@@ -1,0 +1,120 @@
+kind = "web"
+previewPath = "/"
+title = "Deepthi Ramesh — Data & AI"
+description = "A personal, story-led portfolio showing Deepthi Ramesh’s data analysis, engineering, research and applied AI projects, with thoughtful lightweight interactions and accessible light and dark themes."
+version = "1.0.0"
+id = "artifacts/deepthi-portfolio"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 18595
+
+[services.development]
+run = "pnpm --filter @workspace/deepthi-portfolio run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/deepthi-portfolio", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/deepthi-portfolio/dist/public"
+
+[[services.production.rewrites]]
+from = "/work/food-inspections"
+to = "/work/food-inspections/index.html"
+
+[[services.production.rewrites]]
+from = "/work/food-inspections/"
+to = "/work/food-inspections/index.html"
+
+[[services.production.rewrites]]
+from = "/work/glowmetric"
+to = "/work/glowmetric/index.html"
+
+[[services.production.rewrites]]
+from = "/work/glowmetric/"
+to = "/work/glowmetric/index.html"
+
+[[services.production.rewrites]]
+from = "/work/cloutwatch"
+to = "/work/cloutwatch/index.html"
+
+[[services.production.rewrites]]
+from = "/work/cloutwatch/"
+to = "/work/cloutwatch/index.html"
+
+[[services.production.rewrites]]
+from = "/work/trip-sync"
+to = "/work/trip-sync/index.html"
+
+[[services.production.rewrites]]
+from = "/work/trip-sync/"
+to = "/work/trip-sync/index.html"
+
+[[services.production.rewrites]]
+from = "/work/lease-lens"
+to = "/work/lease-lens/index.html"
+
+[[services.production.rewrites]]
+from = "/work/lease-lens/"
+to = "/work/lease-lens/index.html"
+
+[[services.production.rewrites]]
+from = "/work/ecommerce-funnel"
+to = "/work/ecommerce-funnel/index.html"
+
+[[services.production.rewrites]]
+from = "/work/ecommerce-funnel/"
+to = "/work/ecommerce-funnel/index.html"
+
+[[services.production.rewrites]]
+from = "/work/cloud-bi"
+to = "/work/cloud-bi/index.html"
+
+[[services.production.rewrites]]
+from = "/work/cloud-bi/"
+to = "/work/cloud-bi/index.html"
+
+[[services.production.rewrites]]
+from = "/work/media-metadata"
+to = "/work/media-metadata/index.html"
+
+[[services.production.rewrites]]
+from = "/work/media-metadata/"
+to = "/work/media-metadata/index.html"
+
+[[services.production.rewrites]]
+from = "/work/supply-chain"
+to = "/work/supply-chain/index.html"
+
+[[services.production.rewrites]]
+from = "/work/supply-chain/"
+to = "/work/supply-chain/index.html"
+
+[[services.production.rewrites]]
+from = "/about"
+to = "/about/index.html"
+
+[[services.production.rewrites]]
+from = "/about/"
+to = "/about/index.html"
+
+[[services.production.rewrites]]
+from = "/portfolio"
+to = "/portfolio/index.html"
+
+[[services.production.rewrites]]
+from = "/portfolio/"
+to = "/portfolio/index.html"
+
+[[services.production.rewrites]]
+from = "/contact"
+to = "/contact/index.html"
+
+[[services.production.rewrites]]
+from = "/contact/"
+to = "/contact/index.html"
+
+[services.env]
+PORT = "18595"
+BASE_PATH = "/"
