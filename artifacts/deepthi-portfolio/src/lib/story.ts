@@ -41,8 +41,8 @@ export const chapterKinds: { kind: ChapterKind; label: string }[] = [
 
 export const chapterIntro = {
   title: 'Beyond the analyst role',
-  lede: '[One or two sentences connecting the analyst work to startups, AI learning, hackathons and events.]',
-  status: 'draft' as 'draft' | 'published',
+  lede: 'Alongside the pipelines, models and dashboards of my analyst work, I have been building toward generative AI: learning how large language model applications are designed, grounded in data and evaluated.',
+  status: 'published' as 'draft' | 'published',
 };
 
 export const chapters: ChapterEntry[] = [
@@ -61,17 +61,26 @@ export const chapters: ChapterEntry[] = [
     tools: ['[Tool]'],
   },
   {
-    id: 'ai-learning-1',
+    id: 'ai-learning-oci-genai',
     kind: 'ai-learning',
-    status: 'draft',
-    title: '[Course, program or self-directed project]',
-    role: '[Participant / learner / mentor]',
-    dates: '[Mon YYYY]',
-    summary: '[What you set out to learn and how you applied it.]',
-    contributions: ['[What you built or practiced]'],
+    status: 'published',
+    title: 'Oracle Cloud Infrastructure 2025 Certified Generative AI Professional',
+    role: 'Certified professional',
+    org: 'Oracle',
+    dates: 'Oct 2025',
+    summary: 'A professional-level Oracle certification in building large language model applications with the OCI Generative AI service, taking my data work into generative AI.',
+    contributions: [
+      'Earned the credential covering large language model fundamentals and the OCI Generative AI service.',
+      'Certification scope includes retrieval-augmented generation, semantic search, vector databases and LangChain for building, tracing, evaluating and deploying LLM applications.',
+    ],
     outcomes: [],
-    evidence: [],
-    tools: [],
+    evidence: [
+      {
+        label: 'Verify on Oracle',
+        url: 'https://catalog-education.oracle.com/pls/certview/sharebadge?id=94DB3368AD5F73CE6F8DDAAD2F2832D8DE8CE84ACAC08A1F54C9D780CC5D382A',
+      },
+    ],
+    tools: ['OCI Generative AI', 'LangChain', 'Vector search'],
   },
   {
     id: 'hackathon-1',

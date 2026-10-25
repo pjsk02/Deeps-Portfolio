@@ -25,6 +25,22 @@ editable drafts inside the Experience section, with an optional résumé button.
 - No new external links or downloads were added, so none needed checking. Check
   any evidence links and the résumé once real values are entered.
 
+### AI-learning chapter published (25 October 2026)
+
+The chapter introduction and the Oracle Generative AI certification entry are
+now published; the startup, hackathon and event drafts remain preview-only.
+
+- Typecheck and production build passed. The prerendered homepage contains the
+  introduction and certification entry and no draft copy.
+- Production preview at 390 px and 1440 px in light and dark: one chapter entry,
+  no draft labels and no horizontal overflow.
+- The browser suite passed all 167 checks that apply to the dev server (drafts
+  visible); the 14 routing/404 checks need the production preview and were
+  unaffected by this content-only change.
+- Evidence link: Oracle's badge page loads (HTTP 302 to the verification page)
+  and names Deepthi Ramesh, issued 31 October 2025.
+- Résumé: none supplied, so the button stays hidden.
+
 ### Pages and displays
 
 - Homepage, all nine project pages and the not-found page
@@ -170,9 +186,10 @@ omits the domain-dependent tags and the sitemap.
 case-study URLs, legacy redirects, the 404 status, images, headers and social
 previews on the live host.
 - The old résumé link was broken and has been omitted; the résumé button stays
-  hidden until a URL is set in `src/lib/story.ts`. Startup, AI-learning,
-  hackathon and event chapters are editable drafts awaiting approved details;
-  no achievements were invented to fill them.
+  hidden until a URL is set in `src/lib/story.ts`. The AI-learning
+  chapter shows the verified Oracle certification; startup, hackathon and event
+  chapters are editable drafts awaiting approved details; no achievements were
+  invented to fill them.
 
 ## Reproducing the checks
 

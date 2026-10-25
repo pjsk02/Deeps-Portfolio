@@ -19,11 +19,18 @@ destination repository is `pjsk02/Deeps-Portfolio`; these are distinct identitie
   verified production use, client outcomes or sole authorship.
 - Publication author listings establish coauthorship, not an individual's
   specific contribution or deployment of a research model.
+- The AI-learning chapter publishes one entry: the Oracle Cloud Infrastructure
+  2025 Certified Generative AI Professional credential. The user confirmed it,
+  and Oracle's verification page shows it awarded to Deepthi Ramesh on
+  31 October 2025 (valid until October 2027). Its copy describes the
+  credential's published scope only, not projects built with it.
 - Startup collaboration, hackathons and organized events were requested as
-  chapters but no approved descriptions, dates or evidence were supplied. They
-  exist as bracketed drafts in `src/lib/story.ts` for the user to complete;
-  drafts are visible only in the development preview and the build rejects
-  published entries that still contain placeholders.
+  chapters but no approved descriptions, dates or evidence were supplied. The
+  user pointed to LinkedIn, which blocks automated reading (HTTP 403/999), and
+  will upload the details later. They stay as bracketed drafts in
+  `src/lib/story.ts`; drafts are visible only in the development preview and the
+  build rejects published entries that still contain placeholders. Do not claim
+  hackathon wins or events until the user supplies them.
 - Current degree-completion status and availability were not confirmed. Do not
   assert “currently a student,” “graduated” or “available now” without an update.
 - The legacy résumé link returns 404. Do not include a broken download or
