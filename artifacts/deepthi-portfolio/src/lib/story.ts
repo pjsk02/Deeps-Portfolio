@@ -80,7 +80,7 @@ export const chapters: ChapterEntry[] = [
         url: 'https://catalog-education.oracle.com/pls/certview/sharebadge?id=94DB3368AD5F73CE6F8DDAAD2F2832D8DE8CE84ACAC08A1F54C9D780CC5D382A',
       },
     ],
-    tools: ['OCI Generative AI', 'LangChain', 'Vector search'],
+    tools: [],
   },
   {
     id: 'hackathon-1',

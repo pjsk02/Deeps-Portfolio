@@ -10,11 +10,11 @@ entries ship as bracketed drafts that only render in the dev preview.
 and publishing invented details is not allowed. Later they said "check my
 LinkedIn", but LinkedIn blocks automated reading (403/999) and search snippets
 mix several people named Deepthi Ramesh, so LinkedIn is not a usable source.
-They chose to upload screenshots/PDF later and keep the startup chapter editable.
 
 **How to apply:** never flip a draft to published or replace placeholders with
 guessed facts. Publish only what the user confirms, ideally backed by a
 first-party verification page (e.g. Oracle certview badge pages are fetchable
-and name the holder). Ask for LinkedIn screenshots or "Save to PDF" rather than
+and name the holder). A credential shows its syllabus, not hands-on use, so
+don't list its topics under the "Used" tools heading. Ask for LinkedIn screenshots or "Save to PDF" rather than
 scraping. Verify evidence links / résumé downloads and mobile layouts before
 publishing.
