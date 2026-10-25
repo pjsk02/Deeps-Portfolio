@@ -25,6 +25,9 @@ export function PrefsProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (ready) {
       document.documentElement.classList.toggle('dark', theme === 'dark');
+      document.querySelectorAll('meta[name="theme-color"]').forEach((meta) => {
+        meta.setAttribute('content', theme === 'dark' ? '#231815' : '#F5EFC6');
+      });
       document.documentElement.setAttribute('data-app-ready', 'true');
     }
   }, [theme, ready]);

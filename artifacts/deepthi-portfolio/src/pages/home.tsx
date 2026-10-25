@@ -219,11 +219,11 @@ function Game() {
           {playing ? (
             <Suspense fallback={<Skeleton h="h-[420px]" />}><PipelineGame onExit={exit} /></Suspense>
           ) : (
-            <div className="crt rounded-xl p-8 min-h-[300px] flex flex-col items-start justify-center gap-4 pixel border-4 border-[hsl(232_45%_22%)]">
-              <p className="text-xs uppercase tracking-widest text-[hsl(40_92%_62%)]">Insert curiosity</p>
+            <div className="crt rounded-xl p-5 sm:p-8 min-h-[300px] flex flex-col items-start justify-center gap-4 pixel border-4">
+              <p className="text-xs uppercase tracking-widest game-accent">Insert curiosity</p>
               <p className="text-2xl">&gt; 3 stages. 2 cities. 1 grain.</p>
               <button ref={startBtn} type="button" onClick={() => setPlaying(true)} onMouseEnter={() => import('@/components/pipeline-game')} onFocus={() => import('@/components/pipeline-game')}
-                className="mt-2 inline-flex items-center gap-2 px-4 py-3 bg-[hsl(40_92%_58%)] text-[hsl(232_50%_10%)] font-medium" data-testid="button-game-start">
+                className="mt-2 inline-flex items-center gap-2 px-4 py-3 game-action font-medium" data-testid="button-game-start">
                 <Gamepad2 size={18} />Start the game
               </button>
             </div>

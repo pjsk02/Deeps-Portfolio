@@ -46,6 +46,11 @@ Nine linked projects, five co-authored publications, analyst/research experience
 
 Keep the portfolio creative and visually polished without generic AI decoration. Preserve the analyst-first story and use real evidence. Check links, redirects, displays, themes, keyboard/touch behavior and performance before presenting a release as ready.
 
+The user supplied this palette for the interface: `#F5EFC6`, `#4D0E12`,
+`#A5BCD6`, `#4A2E27`, `#231815`. Keep both themes, controls, game states and
+future UI within this palette; use blends when needed for readable contrast.
+Original photographs and project screenshots retain their authentic colors.
+
 ## Gotchas
 
 - Use artifact tools to change `artifact.toml`, never direct edits. The managed workflow supplies `PORT` and `BASE_PATH`.

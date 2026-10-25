@@ -4,7 +4,7 @@ import { paths, open, loadImages, observeErrors, expectNoOverflow } from './port
 
 test.describe.configure({ mode: 'parallel' });
 
-for (const width of [360, 390, 768, 1440]) {
+for (const width of [320, 360, 390, 768, 1024, 1440]) {
   for (const theme of ['light', 'dark'] as const) {
     for (const path of [...paths, '/404']) {
       test(`layout ${width}px ${theme} ${path}`, async ({ page }, testInfo) => {

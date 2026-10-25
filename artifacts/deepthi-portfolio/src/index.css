@@ -38,31 +38,36 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-/* "Annotated ledger": indigo ink + marigold highlighter on warm paper */
+/* User palette. Shared HSL channels retain alpha support throughout the UI. */
 :root {
-  --background: 42 38% 91%;
-  --foreground: 232 45% 16%;
-  --border: 232 22% 78%;
-  --card: 42 45% 95%;
-  --card-foreground: 232 45% 16%;
-  --card-border: 232 22% 80%;
-  --popover: 42 45% 95%;
-  --popover-foreground: 232 45% 16%;
-  --popover-border: 232 22% 80%;
-  --primary: 232 59% 30%;
-  --primary-foreground: 42 50% 95%;
-  --secondary: 40 60% 84%;
-  --secondary-foreground: 232 45% 16%;
-  --muted: 40 28% 86%;
-  --muted-foreground: 232 18% 36%;
-  --accent: 39 88% 52%;
-  --accent-foreground: 232 50% 12%;
-  --signal: 11 64% 39%;
-  --destructive: 8 70% 42%;
-  --destructive-foreground: 42 50% 95%;
-  --input: 232 22% 70%;
-  --ring: 232 59% 40%;
-  --grid: 232 40% 30% / 0.06;
+  --cream: 52.34043 70.14925% 86.86275%; /* #F5EFC6 */
+  --burgundy: 356.19048 69.23077% 17.84314%; /* #4D0E12 */
+  --blue: 211.83673 37.40458% 74.31373%; /* #A5BCD6 */
+  --soil: 12 30.97345% 22.15686%; /* #4A2E27 */
+  --java: 12.85714 25% 10.98039%; /* #231815 */
+  --background: var(--cream);
+  --foreground: var(--java);
+  --border: 42.27273 26.50602% 67.45098%; /* cream / soil blend */
+  --card: 54 55.55556% 85.88235%; /* cream / blue blend */
+  --card-foreground: var(--java);
+  --card-border: var(--border);
+  --popover: var(--cream);
+  --popover-foreground: var(--java);
+  --popover-border: var(--border);
+  --primary: var(--burgundy);
+  --primary-foreground: var(--cream);
+  --secondary: var(--blue);
+  --secondary-foreground: var(--java);
+  --muted: var(--blue);
+  --muted-foreground: var(--soil);
+  --accent: var(--blue);
+  --accent-foreground: var(--java);
+  --signal: var(--soil);
+  --destructive: var(--burgundy);
+  --destructive-foreground: var(--cream);
+  --input: var(--soil);
+  --ring: var(--burgundy);
+  --grid: var(--soil) / 0.055;
   --app-font-sans: 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif;
   --app-font-serif: 'Fraunces', Georgia, serif;
   --app-font-mono: 'JetBrains Mono', ui-monospace, monospace;
@@ -70,29 +75,29 @@
 }
 
 .dark {
-  --background: 232 42% 12%;
-  --foreground: 42 40% 90%;
-  --border: 232 24% 26%;
-  --card: 232 38% 16%;
-  --card-foreground: 42 40% 90%;
-  --card-border: 232 24% 28%;
-  --popover: 232 38% 16%;
-  --popover-foreground: 42 40% 90%;
-  --popover-border: 232 24% 28%;
-  --primary: 229 85% 80%;
-  --primary-foreground: 232 45% 12%;
-  --secondary: 232 30% 22%;
-  --secondary-foreground: 42 40% 90%;
-  --muted: 232 30% 19%;
-  --muted-foreground: 232 20% 72%;
-  --accent: 40 92% 58%;
-  --accent-foreground: 232 50% 10%;
-  --signal: 12 80% 68%;
-  --destructive: 8 75% 62%;
-  --destructive-foreground: 232 45% 10%;
-  --input: 232 24% 36%;
-  --ring: 40 92% 58%;
-  --grid: 42 60% 90% / 0.045;
+  --background: var(--java);
+  --foreground: var(--cream);
+  --border: 37.5 13.33333% 35.29412%; /* java / cream blend */
+  --card: var(--soil);
+  --card-foreground: var(--cream);
+  --card-border: var(--border);
+  --popover: var(--soil);
+  --popover-foreground: var(--cream);
+  --popover-border: var(--border);
+  --primary: var(--blue);
+  --primary-foreground: var(--java);
+  --secondary: var(--burgundy);
+  --secondary-foreground: var(--cream);
+  --muted: var(--soil);
+  --muted-foreground: var(--blue);
+  --accent: var(--cream);
+  --accent-foreground: var(--java);
+  --signal: 43.63636 27.5% 68.62745%; /* soil / cream blend */
+  --destructive: var(--cream);
+  --destructive-foreground: var(--burgundy);
+  --input: var(--blue);
+  --ring: var(--blue);
+  --grid: var(--cream) / 0.05;
 }
 
 @layer base {
@@ -113,7 +118,7 @@
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
   :focus-visible { outline: 3px solid hsl(var(--ring)); outline-offset: 3px; border-radius: 4px; }
-  .crt :focus-visible { outline-color: hsl(40 92% 62%); }
+  .crt :focus-visible { outline-color: hsl(var(--cream)); }
   section[aria-labelledby='contact'] :focus-visible { outline-color: hsl(var(--primary-foreground)); }
   ::selection { background: hsl(var(--accent)); color: hsl(var(--accent-foreground)); }
 }
@@ -125,12 +130,12 @@
 main, article, section, aside, figure { min-width: 0; }
 img { max-width: 100%; }
 
-/* marigold highlighter stroke */
+/* Palette-colored highlighter stroke */
 .mark {
   background: linear-gradient(transparent 58%, hsl(var(--accent) / .75) 58%, hsl(var(--accent) / .75) 92%, transparent 92%);
   padding: 0 .08em; box-decoration-break: clone; -webkit-box-decoration-break: clone;
 }
-.dark .mark { background: linear-gradient(transparent 62%, hsl(var(--accent) / .45) 62%, hsl(var(--accent) / .45) 94%, transparent 94%); }
+.dark .mark { background: linear-gradient(transparent 62%, hsl(var(--accent) / .2) 62%, hsl(var(--accent) / .2) 94%, transparent 94%); }
 
 .kicker { font-family: var(--app-font-mono); font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: hsl(var(--muted-foreground)); }
 
@@ -173,4 +178,14 @@ html[data-motion='off'] *, html[data-motion='off'] *::before, html[data-motion='
 .paused .bob, .paused .blink { animation-play-state: paused; }
 
 .pixel { font-family: var(--app-font-mono); image-rendering: pixelated; }
-.crt { background: hsl(232 45% 10%); color: hsl(42 60% 88%); background-image: repeating-linear-gradient(0deg, hsl(0 0% 100% / .03) 0 1px, transparent 1px 3px); }
+.crt {
+  background: hsl(var(--java)); color: hsl(var(--cream));
+  border-color: hsl(var(--soil));
+  background-image: repeating-linear-gradient(0deg, hsl(var(--cream) / .025) 0 1px, transparent 1px 3px);
+}
+.game-accent { color: hsl(var(--blue)); }
+.game-action { background: hsl(var(--cream)); color: hsl(var(--java)); min-height: 44px; }
+.game-line { border-color: hsl(var(--cream) / .4); }
+.game-choice:hover { border-color: hsl(var(--cream)); }
+.game-correct { background: hsl(var(--blue)); color: hsl(var(--java)); }
+.game-incorrect { background: hsl(var(--burgundy)); color: hsl(var(--cream)); }

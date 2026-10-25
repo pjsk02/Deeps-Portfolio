@@ -71,36 +71,42 @@ export default function PipelineGame({ onExit }: Props) {
   };
 
   return (
-    <div ref={box} tabIndex={-1} onKeyDown={onKey} className="crt rounded-xl p-4 md:p-6 pixel outline-none border-4 border-[hsl(232_45%_22%)]" role="region" aria-label="Fix the pipeline game" data-testid="widget-pipeline-game">
+    <div ref={box} tabIndex={-1} onKeyDown={onKey} className="crt rounded-xl p-4 md:p-6 pixel outline-none border-4" role="region" aria-label="Fix the pipeline game" data-testid="widget-pipeline-game">
       <div className="flex flex-wrap items-center justify-between gap-2 text-xs uppercase tracking-widest">
-        <span>Fix the pipeline · {done ? 'complete' : `stage ${i + 1}/${rounds.length}`} · score {score}</span>
-        <span className="text-[hsl(40_92%_62%)]">Synthetic example rows</span>
+        <span className="flex flex-wrap gap-x-2 gap-y-1">
+          <span className="whitespace-nowrap">Fix the pipeline</span>
+          <span className="whitespace-nowrap">· {done ? 'complete' : `stage ${i + 1}/${rounds.length}`}</span>
+          <span className="whitespace-nowrap">· score {score}</span>
+        </span>
+        <span className="game-accent">Synthetic example rows</span>
       </div>
 
       {!done ? (
         <div className="mt-4" aria-live="polite">
           <p className="text-base md:text-lg">&gt; {r.prompt}</p>
-          <table className="mt-3 text-xs md:text-sm border border-white/20">
-            <caption className="sr-only">Synthetic inspection rows for stage {i + 1}</caption>
-            <thead><tr>{r.rows[0].map((c) => <th key={c} scope="col" className="px-2 py-1 text-left font-normal text-[hsl(40_92%_62%)] border-r border-white/10">{c}</th>)}</tr></thead>
-            <tbody>{r.rows.slice(1).map((row, ri) => <tr key={ri}>{row.map((c, ci) => <td key={ci} className="px-2 py-1 border-r border-white/10">{c}</td>)}</tr>)}</tbody>
-          </table>
+          <div className="mt-3 max-w-full overflow-x-auto" role="region" aria-label="Scrollable inspection example" tabIndex={0}>
+            <table className="text-xs md:text-sm border game-line">
+              <caption className="sr-only">Synthetic inspection rows for stage {i + 1}</caption>
+              <thead><tr>{r.rows[0].map((c) => <th key={c} scope="col" className="px-2 py-1 text-left font-normal game-accent border-r game-line">{c}</th>)}</tr></thead>
+              <tbody>{r.rows.slice(1).map((row, ri) => <tr key={ri}>{row.map((c, ci) => <td key={ci} className="px-2 py-1 border-r game-line">{c}</td>)}</tr>)}</tbody>
+            </table>
+          </div>
           <div className="mt-4 grid gap-2">
             {r.choices.map((c, n) => {
-              const state = pick === null ? '' : c.ok ? 'bg-[hsl(150_45%_30%)]' : pick === n ? 'bg-[hsl(8_60%_38%)]' : 'opacity-50';
+              const state = pick === null ? '' : c.ok ? 'game-correct' : pick === n ? 'game-incorrect' : 'opacity-50';
               return (
                 <button key={n} type="button" onClick={() => choose(n)} disabled={pick !== null} data-testid={`button-game-choice-${n + 1}`}
-                  className={`text-left px-3 py-3 min-h-[48px] border border-white/30 hover:border-white text-sm ${state}`}>
+                  className={`game-choice text-left px-3 py-3 min-h-[48px] border game-line text-sm ${state}`}>
                   [{n + 1}] {c.t}
                 </button>
               );
             })}
           </div>
           {pick !== null && (
-            <div className="mt-4 p-3 border border-dashed border-white/40 text-sm">
+            <div className="mt-4 p-3 border border-dashed game-line text-sm">
               <p>{r.choices[pick].ok ? 'GOOD CALL.' : 'NOT QUITE.'} {r.choices[pick].why}</p>
               {!r.choices[pick].ok && <p className="mt-1 opacity-80">Better: {r.choices.find((c) => c.ok)!.t}.</p>}
-              <button type="button" onClick={next} className="mt-3 px-3 py-2 bg-[hsl(40_92%_58%)] text-[hsl(232_50%_10%)] font-medium" data-testid="button-game-next">{i + 1 < rounds.length ? 'Next stage [Enter]' : 'See result [Enter]'}</button>
+              <button type="button" onClick={next} className="mt-3 px-3 py-2 game-action font-medium" data-testid="button-game-next">{i + 1 < rounds.length ? 'Next stage [Enter]' : 'See result [Enter]'}</button>
             </div>
           )}
         </div>
@@ -114,9 +120,9 @@ export default function PipelineGame({ onExit }: Props) {
       )}
 
       <div className="mt-5 flex flex-wrap gap-2 text-xs">
-        <button type="button" onClick={reset} className="inline-flex min-h-11 items-center gap-1 px-3 py-2 border border-white/30" data-testid="button-game-reset"><RotateCcw size={13} />Reset</button>
-        {!done && <button type="button" onClick={() => { setPick(null); setSkipped(true); setI(rounds.length); }} className="inline-flex min-h-11 items-center gap-1 px-3 py-2 border border-white/30" data-testid="button-game-skip"><SkipForward size={13} />Skip to result</button>}
-        <button type="button" onClick={onExit} className="inline-flex min-h-11 items-center gap-1 px-3 py-2 border border-white/30" data-testid="button-game-exit"><X size={13} />Exit game [Esc]</button>
+        <button type="button" onClick={reset} className="inline-flex min-h-11 items-center gap-1 px-3 py-2 border game-line" data-testid="button-game-reset"><RotateCcw size={13} />Reset</button>
+        {!done && <button type="button" onClick={() => { setPick(null); setSkipped(true); setI(rounds.length); }} className="inline-flex min-h-11 items-center gap-1 px-3 py-2 border game-line" data-testid="button-game-skip"><SkipForward size={13} />Skip to result</button>}
+        <button type="button" onClick={onExit} className="inline-flex min-h-11 items-center gap-1 px-3 py-2 border game-line" data-testid="button-game-exit"><X size={13} />Exit game [Esc]</button>
         <span className="self-center opacity-70">Keys 1–3 choose · no timer · no sound</span>
       </div>
     </div>
