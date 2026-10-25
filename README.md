@@ -57,9 +57,17 @@ Publish the static output, not the development server. The artifact configuratio
 maps each public project route to its own generated HTML and supplies a custom
 404 page. The portfolio does not require database credentials or an AI API key.
 
-After the real published URL is known, set the single `siteOrigin` value in
-`src/lib/site.ts` and rebuild to add canonical URLs, absolute social metadata and
-the sitemap. Do not substitute a preview URL or the old Framer domain.
+After the real published URL is known, paste it into the single editable
+`publishedSiteUrl` value in the portfolio's `src/lib/site.ts` (for example
+`'https://your-portfolio.replit.app'`) and republish. The build then adds
+canonical URLs, `og:url`, absolute `og:image`/`twitter:image` links, a
+`sitemap.xml` and its `robots.txt` reference. A build-time `VITE_SITE_URL`
+value overrides the setting for check builds without committing an address.
+
+The build rejects addresses that are not plain `https://` site origins and
+rejects preview or local hosts, so a preview URL cannot be substituted. Do not
+use the old Framer domain either. While the value is blank, these
+domain-dependent tags and the sitemap are simply omitted.
 
 ## Content
 

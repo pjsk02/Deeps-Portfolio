@@ -120,6 +120,38 @@ browser RAM or proof that a long-running session can never leak memory**.
   supplies HTTP redirects while static legacy pages use HTML redirects.
 - The verified published domain is still needed for canonical URLs, absolute
   social metadata and a sitemap. No old Framer or preview domain was substituted.
+  See "Search and social metadata" below for what is ready.
+
+## Search and social metadata
+
+Checked on 25 October 2026. The portfolio has **not been published yet**, so no
+live-host checks were possible.
+
+The published address is one editable value, `publishedSiteUrl`, in the
+portfolio's `src/lib/site.ts`. It is intentionally blank. When it is set, the
+build generates:
+
+- a canonical link and `og:url` for the homepage and all nine case studies
+  (no trailing slash on case studies, matching the 308 redirect);
+- absolute `og:image` and `twitter:image` links, plus image size and alt text;
+- a `sitemap.xml` listing those ten pages, referenced from `robots.txt`;
+- the person's URL and image in the structured data;
+- canonical links on the three legacy redirect pages pointing to the homepage.
+
+The not-found page never receives a canonical link and stays `noindex`.
+
+A check build used a placeholder test domain set only for that build, not
+committed. It confirmed the generated tags, sitemap and structured data. In the
+production preview, client-side navigation updated canonical and `og:url` from
+the homepage to a case study, removed both on an unknown route, and restored
+them after returning home, with no page errors. Trailing-slash and legacy routes
+returned 308 redirects. The build rejected a `.replit.dev` preview address, an
+`http://` address and an address with a path. The committed default build
+omits the domain-dependent tags and the sitemap.
+
+**Still to do after publishing:** set the address, republish, then check direct
+case-study URLs, legacy redirects, the 404 status, images, headers and social
+previews on the live host.
 - The old résumé link was broken and has been omitted. Startup, hackathon and
   organized-event chapters still need approved details; no achievements were
   invented to fill them.

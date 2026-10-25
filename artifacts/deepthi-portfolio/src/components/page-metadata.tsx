@@ -2,30 +2,43 @@ import { useEffect } from 'react';
 import { useLocation } from 'wouter';
 import { metadataFor } from '@/lib/site';
 
+function upsert(selector: string, create: () => HTMLElement, attribute: string, value: string) {
+  const existing = document.head.querySelector<HTMLElement>(selector);
+  if (!value) {
+    existing?.remove();
+    return;
+  }
+  const element = existing ?? document.head.appendChild(create());
+  element.setAttribute(attribute, value);
+}
+
+const meta = (key: 'name' | 'property', name: string) => () => {
+  const element = document.createElement('meta');
+  element.setAttribute(key, name);
+  return element;
+};
+
 export function PageMetadata() {
   const [location] = useLocation();
   useEffect(() => {
-    const meta = metadataFor(location);
-    document.title = meta.title;
+    const page = metadataFor(location);
+    document.title = page.title;
     for (const [selector, content] of [
-      ['meta[name="description"]', meta.description],
-      ['meta[name="robots"]', meta.robots],
-      ['meta[property="og:title"]', meta.title],
-      ['meta[property="og:description"]', meta.description],
-      ['meta[name="twitter:title"]', meta.title],
-      ['meta[name="twitter:description"]', meta.description],
+      ['meta[name="description"]', page.description],
+      ['meta[name="robots"]', page.robots],
+      ['meta[property="og:title"]', page.title],
+      ['meta[property="og:description"]', page.description],
+      ['meta[name="twitter:title"]', page.title],
+      ['meta[name="twitter:description"]', page.description],
     ]) {
       document.querySelector(selector)?.setAttribute('content', content);
     }
-    const canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
-    if (meta.canonical) {
-      const link = canonical ?? document.head.appendChild(document.createElement('link'));
+    upsert('link[rel="canonical"]', () => {
+      const link = document.createElement('link');
       link.rel = 'canonical';
-      link.href = meta.canonical;
-    } else {
-      canonical?.remove();
-    }
-    document.querySelector('meta[property="og:url"]')?.setAttribute('content', meta.canonical);
+      return link;
+    }, 'href', page.canonical);
+    upsert('meta[property="og:url"]', meta('property', 'og:url'), 'content', page.canonical);
   }, [location]);
   return null;
 }

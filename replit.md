@@ -36,7 +36,7 @@ A story-led portfolio for data analyst, data engineering and applied-AI roles, b
 - The bot walkthrough is an explicitly labeled, deterministic illustration, not a live AI service. This avoids API costs, personal-data collection and unpredictable outputs.
 - The game is optional and untimed, with a readable alternative. It must not gate the portfolio's content.
 - Prerendered pages preserve useful content and distinct metadata without JavaScript. Do not replace the exact static route rewrites with a blanket SPA fallback: unknown pages should use `404.html`.
-- No fabricated production URL: canonical URLs and the sitemap wait for the verified published domain.
+- No fabricated production URL: canonical URLs, absolute social links and the sitemap are generated only once `publishedSiteUrl` in `src/lib/site.ts` holds the verified published address. It is blank until the user supplies it; the build rejects preview/local hosts.
 
 ## Product
 
