@@ -1,7 +1,8 @@
 import { lazy, Suspense, useRef, useState, type ReactNode } from 'react';
 import { Link } from 'wouter';
-import { ArrowRight, ArrowUpRight, Mail, Gamepad2 } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Mail, Gamepad2, FileText } from 'lucide-react';
 import { asset, profile, experience, education, projects, publications, capabilities } from '@/lib/content';
+import { chapterIntro, chapterKinds, resume, resumeHref, showChapterIntro, visibleChapters } from '@/lib/story';
 import { useNear } from '@/lib/prefs';
 import { InspectionFigure, AgentFigure, Dashboard } from '@/components/figures';
 
@@ -39,6 +40,7 @@ function Hero() {
           <div className="reveal mt-8 flex flex-wrap gap-3">
             <a href="#work" className="btn btn-ink" data-testid="link-explore-work">Explore my work <ArrowRight size={17} /></a>
             <a href={`mailto:${profile.email}`} className="btn btn-line" data-testid="link-hero-email"><Mail size={17} />Get in touch</a>
+            {resumeHref && <a href={resumeHref} target="_blank" rel="noreferrer" className="btn btn-line" data-testid="link-hero-resume"><FileText size={17} />{resume.label}</a>}
           </div>
         </div>
         <figure className="reveal relative mx-auto w-full max-w-[380px]">
@@ -89,7 +91,65 @@ function Experience() {
           </article>
         ))}
       </div>
+      <Chapters />
     </section>
+  );
+}
+
+function Chapters() {
+  if (visibleChapters.length === 0) return null;
+  return (
+    <div className="mt-16" data-testid="section-chapters">
+      <div className="reveal grid md:grid-cols-[180px_1fr] gap-3 md:gap-8 border-t border-foreground/20 pt-5 mb-8">
+        <p className="kicker">Beyond the role</p>
+        <div>
+          <h3 id="beyond" className="font-display text-2xl md:text-4xl leading-tight scroll-mt-24">{chapterIntro.title}</h3>
+          {showChapterIntro && <p className="mt-3 text-muted-foreground max-w-2xl">{chapterIntro.lede}</p>}
+        </div>
+      </div>
+      <div className="space-y-12">
+        {chapterKinds.map(({ kind, label }) => {
+          const entries = visibleChapters.filter((e) => e.kind === kind);
+          if (entries.length === 0) return null;
+          return (
+            <div key={kind} className="grid md:grid-cols-[180px_1fr] gap-3 md:gap-8" data-testid={`group-chapter-${kind}`}>
+              <h4 className="font-display italic text-xl text-primary md:pt-1">{label}</h4>
+              <div className="space-y-10">
+                {entries.map((e) => (
+                  <article key={e.id} className={`reveal grid lg:grid-cols-[1fr_280px] gap-6 ${e.status === 'draft' ? 'rounded-xl border-2 border-dashed border-foreground/30 p-4 md:p-5' : ''}`} data-testid={`item-chapter-${e.id}`}>
+                    <div className="min-w-0">
+                      {e.status === 'draft' && <p className="mono text-xs uppercase tracking-widest text-[hsl(var(--signal))] mb-2">Draft · preview only, hidden on the live site</p>}
+                      <p className="mono text-sm text-muted-foreground">{e.dates}</p>
+                      <h5 className="text-xl md:text-2xl font-semibold mt-1 break-words">{e.title} <span className="text-muted-foreground font-normal">· {e.role}{e.org ? `, ${e.org}` : ''}</span></h5>
+                      <p className="mt-2">{e.summary}</p>
+                      <ul className="mt-4 space-y-2">
+                        {e.contributions.map((c) => <li key={c} className="flex gap-3"><span className="mt-2.5 h-1.5 w-3 bg-accent shrink-0" aria-hidden />{c}</li>)}
+                      </ul>
+                      {e.outcomes && e.outcomes.length > 0 && (
+                        <ul className="mt-4 space-y-1 border-l-4 border-[hsl(var(--signal))] pl-3 text-sm">
+                          {e.outcomes.map((o) => <li key={o}>{o}</li>)}
+                        </ul>
+                      )}
+                      {e.evidence && e.evidence.length > 0 && (
+                        <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2">
+                          {e.evidence.map((x) => <a key={x.url} href={x.url} target="_blank" rel="noreferrer" className="link text-sm inline-flex items-center gap-1 break-all" data-testid={`link-chapter-evidence-${e.id}`}>{x.label} <ArrowUpRight size={14} aria-hidden /></a>)}
+                        </div>
+                      )}
+                    </div>
+                    {e.tools && e.tools.length > 0 && (
+                      <div className="lg:border-l lg:pl-6 border-foreground/15">
+                        <p className="kicker mb-2">Used</p>
+                        <p className="mono text-sm leading-7">{e.tools.join(' · ')}</p>
+                      </div>
+                    )}
+                  </article>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 
@@ -302,6 +362,7 @@ function Contact() {
           <a href={`mailto:${profile.email}`} className="btn bg-accent text-accent-foreground hover:opacity-90" data-testid="link-contact-email"><Mail size={17} />{profile.email}</a>
           <a href={profile.linkedin} target="_blank" rel="noreferrer" className="btn border-2 border-primary-foreground/60 hover:bg-primary-foreground/10" data-testid="link-contact-linkedin">LinkedIn profile <ArrowUpRight size={16} aria-hidden /></a>
           <a href={profile.github} target="_blank" rel="noreferrer" className="btn border-2 border-primary-foreground/60 hover:bg-primary-foreground/10" data-testid="link-contact-github">GitHub · Deepthir13 <ArrowUpRight size={16} aria-hidden /></a>
+          {resumeHref && <a href={resumeHref} target="_blank" rel="noreferrer" className="btn border-2 border-primary-foreground/60 hover:bg-primary-foreground/10" data-testid="link-contact-resume"><FileText size={16} />{resume.label}</a>}
         </div>
       </div>
     </section>

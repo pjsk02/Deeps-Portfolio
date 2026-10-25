@@ -23,6 +23,7 @@ A story-led portfolio for data analyst, data engineering and applied-AI roles, b
 ## Where things live
 
 - `artifacts/deepthi-portfolio/src/lib/content.ts` — approved public content and project links
+- `artifacts/deepthi-portfolio/src/lib/story.ts` — user-editable startup, AI-learning, hackathon and event chapters plus the résumé link
 - `artifacts/deepthi-portfolio/src/lib/site.ts` — route metadata, aliases and verified published-domain setting
 - `artifacts/deepthi-portfolio/src/index.css` — light/dark tokens and motion rules
 - `artifacts/deepthi-portfolio/src/pages/` — homepage, project pages, not-found page
@@ -56,7 +57,8 @@ Original photographs and project screenshots retain their authentic colors.
 - Use artifact tools to change `artifact.toml`, never direct edits. The managed workflow supplies `PORT` and `BASE_PATH`.
 - Build before using the production preview command.
 - When adding a project route, update the artifact's exact static rewrites to its prerendered HTML.
-- The old résumé link was broken; no replacement has been supplied. Startup, hackathon and organized-event chapters need approved facts before publication.
+- Startup, AI-learning, hackathon and event chapters live in `story.ts` as bracketed drafts the user will fill in. Drafts render only in the dev preview; production omits them, and the build fails if a `published` entry still has placeholder text or links. Never mark entries published or fill them with invented details.
+- The old résumé link was broken. `resume.url` in `story.ts` is blank, so no résumé button renders until the user supplies one.
 - `Deepthir13` is the portfolio subject's GitHub. The requested destination repository belongs to `pjsk02`; do not replace subject links with the repository owner's identity.
 
 ## Pointers

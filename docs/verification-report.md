@@ -8,6 +8,23 @@ through the Replit preview proxy.
 **181 automated browser checks passed, with no failures, retries or skipped
 checks.** The portfolio typecheck and production build also passed.
 
+### Editable chapters (25 October 2026)
+
+The startup, AI-learning, hackathon and organized-event chapters were added as
+editable drafts inside the Experience section, with an optional résumé button.
+
+- Development preview: all four draft groups render with “Draft” labels and no
+  horizontal overflow or page errors at 320 px light, 390 px dark and 1440 px
+  light. The full browser suite (167 checks) passed against the dev server with
+  drafts visible.
+- Production build: no draft copy appears in the prerendered HTML, and no
+  résumé button renders while its URL is blank. The 14 HTTP/404/no-JavaScript
+  checks passed against the production preview.
+- A deliberately published placeholder entry made the build fail with a clear
+  error, confirming unfinished copy cannot ship.
+- No new external links or downloads were added, so none needed checking. Check
+  any evidence links and the résumé once real values are entered.
+
 ### Pages and displays
 
 - Homepage, all nine project pages and the not-found page
@@ -152,9 +169,10 @@ omits the domain-dependent tags and the sitemap.
 **Still to do after publishing:** set the address, republish, then check direct
 case-study URLs, legacy redirects, the 404 status, images, headers and social
 previews on the live host.
-- The old résumé link was broken and has been omitted. Startup, hackathon and
-  organized-event chapters still need approved details; no achievements were
-  invented to fill them.
+- The old résumé link was broken and has been omitted; the résumé button stays
+  hidden until a URL is set in `src/lib/story.ts`. Startup, AI-learning,
+  hackathon and event chapters are editable drafts awaiting approved details;
+  no achievements were invented to fill them.
 
 ## Reproducing the checks
 

@@ -71,12 +71,16 @@ domain-dependent tags and the sitemap are simply omitted.
 
 ## Content
 
-Edit the portfolio's `src/lib/content.ts`. Keep the subject's GitHub identity,
+Edit the portfolio's `src/lib/content.ts`. Startup collaborations, AI learning,
+hackathons, organized events and the résumé link are edited in
+`src/lib/story.ts`: replace the bracketed draft text, then change an entry's
+`status` to `'published'`. Drafts appear only in the development preview, and
+the build stops if a published entry still contains placeholders. Keep the subject's GitHub identity,
 `Deepthir13`, distinct from the destination repository owner's identity.
 
 See [content and evidence guidelines](docs/content-integrity.md). In particular,
 GlowMetric is a fictional-brand exercise with mixed data, and the interactive
 AI walkthrough is not live model execution. Do not add unverified business
-results, startup details or a broken résumé link.
+results, invented startup details or a broken résumé link.
 
 Font licenses are included in the portfolio's `public/licenses/` directory.

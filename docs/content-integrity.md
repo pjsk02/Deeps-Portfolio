@@ -20,12 +20,15 @@ destination repository is `pjsk02/Deeps-Portfolio`; these are distinct identitie
 - Publication author listings establish coauthorship, not an individual's
   specific contribution or deployment of a research model.
 - Startup collaboration, hackathons and organized events were requested as
-  chapters but no approved descriptions, dates or evidence were supplied. Leave
-  them unpublished instead of inventing filler.
+  chapters but no approved descriptions, dates or evidence were supplied. They
+  exist as bracketed drafts in `src/lib/story.ts` for the user to complete;
+  drafts are visible only in the development preview and the build rejects
+  published entries that still contain placeholders.
 - Current degree-completion status and availability were not confirmed. Do not
   assert “currently a student,” “graduated” or “available now” without an update.
 - The legacy résumé link returns 404. Do not include a broken download or
-  fabricate a résumé.
+  fabricate a résumé. The résumé button stays hidden until `resume.url` in
+  `src/lib/story.ts` is set.
 - Do not migrate the original site's unrelated Landin agency content, team,
   clients, awards, FAQ, affiliate links or legal boilerplate.
 - The portfolio's interactive AI walkthrough and game use explicitly labeled
