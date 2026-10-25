@@ -90,3 +90,20 @@ test('diagram labels stay inside their boxes', async ({ page }) => {
     expect(outside).toEqual([]);
   }
 });
+
+test('sections animate in on scroll when motion is on, and never hide when it is off', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await open(page);
+  await expect(page.locator('html')).toHaveAttribute('data-motion', 'on');
+  const cards = page.locator('section[aria-labelledby="capabilities"] .stagger');
+  await expect(cards).toHaveClass(/reveal-wait/);
+  await expect.poll(() => cards.locator('> *').first().evaluate((el) => getComputedStyle(el).opacity)).toBe('0');
+  await cards.evaluate((el) => el.scrollIntoView({ block: 'center', behavior: 'instant' }));
+  await expect(cards).toHaveClass(/\bin\b/);
+  await expect.poll(() => cards.locator('> *').last().evaluate((el) => getComputedStyle(el).opacity)).toBe('1');
+  await page.getByTestId('button-toggle-motion').click();
+  await page.reload();
+  await expect(page.locator('html')).toHaveAttribute('data-motion', 'off');
+  const hidden = await page.locator('.reveal, .stagger > *').evaluateAll((els) => els.filter((el) => getComputedStyle(el).opacity !== '1').length);
+  expect(hidden).toBe(0);
+});

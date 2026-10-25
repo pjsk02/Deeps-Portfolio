@@ -5,8 +5,21 @@ through the Replit preview proxy.
 
 ## Result
 
-**188 automated browser checks passed, with no failures, retries or skipped
+**189 automated browser checks passed, with no failures, retries or skipped
 checks.** The portfolio typecheck and production build also passed.
+
+### Brighter look and scroll animations (25 October 2026)
+
+At the user's request the page background moved from cream with a grid to a
+sunlit near-white (#FFFDF6, a tint of the supplied cream) with soft drifting
+blue, cream and blush glows; the grid and noise textures were removed. Cards
+use cream, sky-blue and blush tints from the palette, buttons are rounded, and
+a skills ticker runs under the hero. Sections now rise, slide or zoom in as
+they scroll into view, groups of cards arrive one after another, and the
+highlighter strokes and section rules sweep across. The Motion toggle and the
+device's reduce-motion setting turn all of this off, and content stays visible
+without JavaScript. The palette check now expects the new light background
+and browser color (#FFFDF6).
 
 ### Problem check and usability fixes (25 October 2026)
 
@@ -162,8 +175,8 @@ on animation initialization.
 The current stylesheet is 38.0 KB uncompressed / 8.1 KB gzipped, down from the
 earlier 106.7 KB by restricting generated styles to the actual application.
 No dependencies were added for the palette or responsive adjustments.
-No WebGL engine, live AI request or
-continuously running particle background is used.
+No WebGL engine or live AI request is used. The drifting background glows are
+three CSS gradients moved with transforms only, and stop when motion is off.
 
 ### Retained JavaScript memory
 

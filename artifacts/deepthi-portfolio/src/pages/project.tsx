@@ -18,13 +18,13 @@ export default function ProjectPage() {
       <a href={`${BASE}#work`} className="inline-flex items-center gap-2 text-sm hover:text-primary" data-testid="link-back-work"><ArrowLeft size={16} />Back to all work</a>
 
       <header className="mt-10 grid lg:grid-cols-[1fr_300px] gap-10 rule pt-6">
-        <div>
-          <p className="kicker">{p.n} · {p.category} · {p.tier}</p>
+        <div className="hero-in">
+          <p><span className="chip">{p.n} · {p.category} · {p.tier}</span></p>
           <h1 className="font-display text-4xl md:text-6xl mt-3 leading-[1.02] tracking-tight">{p.title}</h1>
           <p className="mt-6 text-2xl font-medium max-w-2xl"><span className="mark">{p.question}</span></p>
           <p className="mt-4 text-lg text-muted-foreground max-w-2xl">{p.summary}</p>
         </div>
-        <aside className="lg:border-l lg:pl-6 border-foreground/20 space-y-5 text-sm">
+        <aside className="hero-in panel tint-sun p-6 space-y-5 text-sm self-start [--i:2]">
           <div><p className="kicker mb-1">Project</p><p>{p.original}</p></div>
           <div><p className="kicker mb-1">Tools</p><p className="mono leading-6">{p.tools.join(' · ')}</p></div>
           <div><p className="kicker mb-2">Evidence</p><div className="flex flex-wrap gap-2">{p.evidence.map((e) => <span key={e} className={`ev ev-${e}`}>{evidenceLabel[e]}</span>)}</div></div>
@@ -32,11 +32,11 @@ export default function ProjectPage() {
         </aside>
       </header>
 
-      {p.context && <p className="mt-10 p-4 border-l-4 border-[hsl(var(--signal))] bg-card max-w-3xl" data-testid="text-project-context"><strong>Context.</strong> {p.context}</p>}
+      {p.context && <p className="mt-10 p-4 border-l-4 border-[hsl(var(--signal))] bg-card rounded-r-2xl max-w-3xl" data-testid="text-project-context"><strong>Context.</strong> {p.context}</p>}
 
-      {p.slug === 'food-inspections' && <div className="mt-10 max-w-2xl rounded-xl border-2 border-foreground/80 bg-card p-5"><InspectionFigure /></div>}
+      {p.slug === 'food-inspections' && <div className="mt-10 max-w-2xl panel p-5"><InspectionFigure /></div>}
       {p.slug === 'cloutwatch' && (
-        <div className="mt-10 max-w-2xl rounded-xl border-2 border-foreground/80 bg-card p-5">
+        <div className="mt-10 max-w-2xl panel p-5">
           <AgentFigure />
           <a href={`${BASE}#workbench`} className="link text-sm mt-3 inline-block" data-testid="link-open-workbench">Step through the illustrative walkthrough</a>
         </div>
@@ -52,7 +52,7 @@ export default function ProjectPage() {
           ))}
         </div>
         <aside className="space-y-6">
-          <section className="rounded-lg border border-foreground/20 bg-card p-5">
+          <section className="panel !rounded-2xl p-5">
             <h2 className="kicker">Scope & considerations</h2>
             <ul className="mt-3 space-y-2 text-sm">{p.limits.map((l) => <li key={l} className="flex gap-2"><span className="text-[hsl(var(--signal))]" aria-hidden>—</span>{l}</li>)}</ul>
           </section>
@@ -72,12 +72,12 @@ export default function ProjectPage() {
         </section>
       )}
 
-      <nav aria-label="More projects" className="mt-20 grid sm:grid-cols-2 border-y-2 border-foreground/80">
-        <Link href={`/work/${prev.slug}`} className="group p-5 sm:border-r border-b sm:border-b-0 border-foreground/20 hover:bg-accent/15" data-testid="link-prev-project">
+      <nav aria-label="More projects" className="mt-20 grid sm:grid-cols-2 gap-3">
+        <Link href={`/work/${prev.slug}`} className="group lift rounded-[1.5rem] border border-foreground/10 tint-sun p-5" data-testid="link-prev-project">
           <span className="kicker inline-flex items-center gap-1"><ArrowLeft size={13} />Previous</span>
           <span className="block font-display text-xl mt-1">{prev.title}</span>
         </Link>
-        <Link href={`/work/${next.slug}`} className="group p-5 text-right hover:bg-accent/15" data-testid="link-next-project">
+        <Link href={`/work/${next.slug}`} className="group lift rounded-[1.5rem] border border-foreground/10 tint-sky p-5 text-right" data-testid="link-next-project">
           <span className="kicker inline-flex items-center gap-1">Next<ArrowRight size={13} /></span>
           <span className="block font-display text-xl mt-1">{next.title}</span>
         </Link>

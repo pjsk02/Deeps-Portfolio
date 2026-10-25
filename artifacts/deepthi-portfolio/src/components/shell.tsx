@@ -193,6 +193,7 @@ export function Shell({ children }: { children: ReactNode }) {
     <>
       <PageMetadata />
       <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[80] btn btn-ink">Skip to content</a>
+      <div className="sky" aria-hidden="true"><span className="s1" /><span className="s2" /><span className="s3" /></div>
       <ScrollProgress />
       <Header />
       <main id="main" tabIndex={-1} className="outline-none">{children}</main>

@@ -13,7 +13,7 @@ export default function NotFound() {
           <a href={`${import.meta.env.BASE_URL}#work`} className="btn btn-line" data-testid="link-404-work">Browse projects</a>
         </div>
       </div>
-      <pre className="mono text-sm rounded-xl border-2 border-foreground/80 bg-card p-5 overflow-x-auto" aria-hidden="true">{`SELECT page
+      <pre className="mono text-sm panel p-5 overflow-x-auto" aria-hidden="true">{`SELECT page
 FROM   site
 WHERE  url = :requested;
 

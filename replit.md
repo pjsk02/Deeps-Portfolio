@@ -52,6 +52,12 @@ The user supplied this palette for the interface: `#F5EFC6`, `#4D0E12`,
 future UI within this palette; use blends when needed for readable contrast.
 Original photographs and project screenshots retain their authentic colors.
 
+The user wants the site to feel bright and cheerful, not dull. The light theme
+uses a sunlit near-white page (`#FFFDF6`, a tint of the cream) with soft drifting
+color glows, the cream/blue/blush tints for cards, and no grid or noise
+texture. Scroll animations should be clearly visible when motion is on, and
+the Motion toggle and reduced-motion setting must still turn them off.
+
 ## Gotchas
 
 - Use artifact tools to change `artifact.toml`, never direct edits. The managed workflow supplies `PORT` and `BASE_PATH`.

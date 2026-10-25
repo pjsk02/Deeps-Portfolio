@@ -50,7 +50,7 @@ export function Dashboard({ n, caption }: { n: 1 | 2 | 3; caption: string }) {
   return (
     <figure>
       <a href={src} target="_blank" rel="noreferrer" className="group block cursor-zoom-in rounded-lg" data-testid={`link-dashboard-full-${n}`}>
-        <img src={src} alt={caption} loading="lazy" decoding="async" width={1280} height={height} className="w-full h-auto rounded-lg border-2 border-foreground/80 group-hover:border-primary transition-colors" />
+        <img src={src} alt={caption} loading="lazy" decoding="async" width={1280} height={height} className="w-full h-auto rounded-2xl border border-foreground/10 shadow-[0_18px_40px_-24px_hsl(var(--shadow)/.45)] group-hover:border-primary transition-colors" />
         <span className="mt-2 flex justify-end">
           <span className="inline-flex min-h-8 items-center gap-1.5 mono text-xs uppercase tracking-wider text-foreground underline decoration-accent decoration-2 underline-offset-4 group-hover:text-primary">
             <Maximize2 size={13} aria-hidden />View full size<span className="sr-only"> (opens in a new tab)</span>

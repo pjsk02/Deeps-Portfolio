@@ -7,12 +7,12 @@ for (const theme of ['light', 'dark'] as const) {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.emulateMedia({ colorScheme: theme, reducedMotion: 'reduce' });
     await open(page);
-    await expect(page.locator('body')).toHaveCSS('background-color', theme === 'dark' ? 'rgb(35, 24, 21)' : 'rgb(245, 239, 198)');
+    await expect(page.locator('body')).toHaveCSS('background-color', theme === 'dark' ? 'rgb(35, 24, 21)' : 'rgb(255, 253, 246)');
     await expect(page.getByTestId('link-home').locator('rect')).toHaveCSS('fill', theme === 'dark' ? 'rgb(165, 188, 214)' : 'rgb(77, 14, 18)');
-    const expectedColor = theme === 'dark' ? '#231815' : '#F5EFC6';
+    const expectedColor = theme === 'dark' ? '#231815' : '#FFFDF6';
     expect(await page.locator('meta[name="theme-color"]').evaluateAll((nodes) => nodes.map((n) => n.getAttribute('content')))).toEqual([expectedColor, expectedColor]);
     await page.getByTestId('button-toggle-theme').click();
-    const changedColor = theme === 'dark' ? '#F5EFC6' : '#231815';
+    const changedColor = theme === 'dark' ? '#FFFDF6' : '#231815';
     await expect(page.locator('meta[name="theme-color"]').first()).toHaveAttribute('content', changedColor);
     await page.reload();
     await expect(page.locator('meta[name="theme-color"]').first()).toHaveAttribute('content', changedColor);
